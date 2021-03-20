@@ -16,6 +16,7 @@
 
 
 int main() { 
+	std::cout << "Server started\n";
 	int sockfd, n;
 	socklen_t len;
 	char buffer[1024];
