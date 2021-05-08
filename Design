@@ -1,0 +1,25 @@
+Danielle O'Neal
+Design Document
+
+How to compile:
+
+g++ -o dijkstra dijkstra.cpp
+
+How to run:
+
+./dijkstra fileName nodeSize startNode
+
+fileName is the file containing the adjacency matrix  
+nodeSize is the number of nodes
+startNode is the starting node from 0 to nodeSize-1
+
+Design:
+
+In my program, I changed the nodes from letters to numbers in alphabetical order. So in the topology from the question b), the nodes t-z became 0-6. I also chose to represent any nodes without edges with -1 instead of a large number, because it was easier to write out the matrices in the text files. 
+
+The folder contains the files with the adjacency matrices for questions a) b) and c).
+To run question a) with starting node U, run it as:
+
+./dijkstra aMatrix 6 0
+
+and it should output the table followed by "Shortest path: 0, 3, 1, 4, 2, 5" corresponding to u,x,v,y,w,z. My program broke the tie between y and v by favoring v instead, which is why it has a different table to the textbook.

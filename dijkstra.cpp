@@ -13,6 +13,7 @@ vector<int> dijkstra(vector<vector<int>> adj, int nSize, int start){
 
 	bool visited[nSize]; //array used to check whether a node is already in the path
 	pair<int,int> minPath[nSize]; //contains the minimum cost edges for each step of the algorithm
+	int pathCost[nSize];//Contains the minimum cost to get to each of the nodes in the path
 	int nextNode = start;
 	
 	
@@ -20,20 +21,24 @@ vector<int> dijkstra(vector<vector<int>> adj, int nSize, int start){
 		if(adj[start][i] > 0) minPath[i] = make_pair(adj[start][i], start);
 		else minPath[i] = make_pair(-1, -1); //no direct edge between start and node i
 		visited[i] = false;
+		pathCost[i] = 0;
 	}	
 	
 	while(retPath.size() < nSize){
 		retPath.push_back(nextNode);
 		visited[nextNode] = true;
-		for(int i = 0; i < nSize; i++){
+		//Update the minimum cost after adding a new node to the path
+		for(int i = 0; i < nSize; i++){ 
 			if(!visited[i] && adj[nextNode][i] > 0){
-				if(minPath[i].first == -1 || adj[nextNode][i] < minPath[i].first){
-					minPath[i].first = adj[nextNode][i];
+				if(minPath[i].first == -1 || (adj[nextNode][i]+pathCost[nextNode]) < minPath[i].first){
+					minPath[i].first = adj[nextNode][i]+pathCost[nextNode];
 					minPath[i].second = nextNode;
 				}
 			}
 		}
-		
+
+
+		//Find the next node and the cost of adding the next node
 		int minNode = 0, minCost = INT_MAX;
 		for(int i = 0; i < nSize; i++){
 			if(!visited[i]){
@@ -45,6 +50,7 @@ vector<int> dijkstra(vector<vector<int>> adj, int nSize, int start){
 		}
 		
 		nextNode = minNode;
+		pathCost[nextNode] = minCost;
 	}
 
 	return retPath;
@@ -72,6 +78,11 @@ int main(int argc, char * argv[]){
 	vector<vector<int>> adjMatrix;
 	int nodeSize = stoi(argv[2]);
 	int startNode = stoi(argv[3]);
+
+	if(startNode >= nodeSize || startNode < 0){
+		cout << "Invalid start node, please enter a node between 0 and nodeSize-1.\n";
+		return 1;
+	}
 	
 	//Filling out the matrix
 	for(int i = 0; i < nodeSize; i++){
@@ -85,6 +96,7 @@ int main(int argc, char * argv[]){
 	}
 
 	vector<int> path = dijkstra(adjMatrix, nodeSize, startNode);
+
 	cout << "Shortest path: " << path[0];
 	for(int c = 1; c < path.size(); c++){
 		cout << ", " << path[c];
