@@ -24,6 +24,7 @@ vector<int> dijkstra(vector<vector<int>> adj, int nSize, int start){
 		pathCost[i] = 0;
 	}	
 	
+
 	while(retPath.size() < nSize){
 		retPath.push_back(nextNode);
 		visited[nextNode] = true;
@@ -36,7 +37,23 @@ vector<int> dijkstra(vector<vector<int>> adj, int nSize, int start){
 				}
 			}
 		}
-
+		
+		//Printing the rows of the table
+		cout << retPath[0];
+		for(int j = 1; j<retPath.size(); j++){
+			cout << "," + to_string(retPath[j]); 
+		}
+		for(int j = 0; j < nSize*3-retPath.size()*2; j++) cout << " ";
+		for(int i = 0; i < nSize; i++){
+			if(!visited[i]){
+				if(minPath[i].first == -1) cout << "inf         ";
+				else cout << minPath[i].first << "," << minPath[i].second << "         ";
+			}
+			else{
+				cout << "            ";
+			}
+		}
+		cout << "\n";
 
 		//Find the next node and the cost of adding the next node
 		int minNode = 0, minCost = INT_MAX;
@@ -84,10 +101,11 @@ int main(int argc, char * argv[]){
 		return 1;
 	}
 	
+	int i,j;
 	//Filling out the matrix
-	for(int i = 0; i < nodeSize; i++){
+	for(i = 0; i < nodeSize; i++){
 		vector<int> row;
-		for(int j = 0; j < nodeSize; j++){
+		for(j = 0; j < nodeSize; j++){
 			int dist;
 			adjFile >> dist;
 			row.push_back(dist);
@@ -95,13 +113,20 @@ int main(int argc, char * argv[]){
 		adjMatrix.push_back(row);
 	}
 
+	cout << "\n\nN'";
+	for(i = 0; i < nodeSize*2; i++) cout << " ";
+	
+	for(i = 0; i < nodeSize; i++) cout << "D(" + to_string(i) + "),p(" + to_string(i) + ")   ";
+
+	cout << "\n";
+
 	vector<int> path = dijkstra(adjMatrix, nodeSize, startNode);
 
-	cout << "Shortest path: " << path[0];
+	cout << "\nShortest path: " << path[0];
 	for(int c = 1; c < path.size(); c++){
 		cout << ", " << path[c];
 	}
-	cout << "\n";
+	cout << "\n\n";
 	return 0;
 }
 
